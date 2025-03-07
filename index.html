@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Invitación Especial de Cine</title>
+    <style>
+        body {
+            background-image: url('fondo.jpg');
+            background-size: cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden;
+        }
+
+        .envelope {
+            width: 300px;
+            height: 200px;
+            background: #4560f7;
+            position: relative;
+            cursor: pointer;
+            transition: all 0.5s;
+            clip-path: polygon(0 0, 100% 0, 100% 85%, 50% 100%, 0 85%);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .invitation {
+            display: none;
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            animation: appear 0.5s ease-out;
+            z-index: 1;
+        }
+
+        .confirmation-message {
+            display: none;
+            color: #2ecc71;
+            font-size: 24px;
+            animation: float 2s ease-in-out infinite;
+        }
+
+        @keyframes appear {
+            from {
+                transform: scale(0) rotate(-15deg);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1) rotate(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .buttons {
+            margin-top: 25px;
+            position: relative;
+        }
+
+        button {
+            padding: 12px 35px;
+            margin: 10px;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s all;
+        }
+
+        #si {
+            background: #27ae60;
+            color: white;
+            transition: transform 0.5s ease;
+        }
+
+        #no {
+            background: #e74c3c;
+            color: white;
+            position: fixed;
+            transition: none;
+            z-index: 2;
+        }
+
+        h1 {
+            color: #e74c3c;
+            margin: 0 0 15px 0;
+        }
+
+        p {
+            color: #2c3e50;
+            line-height: 1.6;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="envelope" onclick="openEnvelope()">
+        <div class="welcome-message">¡Toca el sobre para descubrir una sorpresa especial! 💌</div>
+    </div>
+
+    <div class="invitation">
+        <h1>🎬 Tarde Mágica de Cine 🍷</h1>
+        <p>✨ ¿Te gustaría compartir una tarde especial conmigo? ✨</p>
+        <p>🍕 Pizza gourmet<br>
+            📅 Hoy viernes 7 de marzo<br>
+            🎥 Película bajo las estrellas<br>
+            🕯️ Ambiente acogedor</p>
+        <div class="confirmation-message" id="confirmationMessage">
+            ¡Invitación aceptada! 🎉<br>
+            ¡Nos vemos a las 7 PM! ⏰
+        </div>
+        <div class="buttons">
+            <button id="si">¡Con mucho gusto! ❤️</button>
+        </div>
+    </div>
+
+    <button id="no" style="display: none;">No 😢</button>
+
+    <script>
+        const btnNo = document.getElementById('no');
+        const btnSi = document.getElementById('si');
+        const confirmationMessage = document.getElementById('confirmationMessage');
+        let velocityX = 15;
+        let velocityY = 15;
+        let scale = 1;
+        let animationFrameId;
+        let growthInterval;
+
+        function openEnvelope() {
+            document.querySelector('.envelope').style.transform = 'scale(0) rotate(360deg)';
+            document.querySelector('.invitation').style.display = 'block';
+            btnNo.style.display = 'block';
+
+            btnNo.style.left = '50%';
+            btnNo.style.top = '50%';
+
+            startAnimations();
+        }
+
+        function moveButton() {
+            const rect = btnNo.getBoundingClientRect();
+            const windowWidth = window.innerWidth;
+            const windowHeight = window.innerHeight;
+
+            let posX = parseFloat(btnNo.style.left);
+            let posY = parseFloat(btnNo.style.top);
+
+            if (posX <= 0 || posX + rect.width >= windowWidth) {
+                velocityX = -velocityX;
+                posX = posX <= 0 ? 0 : windowWidth - rect.width;
+            }
+
+            if (posY <= 0 || posY + rect.height >= windowHeight) {
+                velocityY = -velocityY;
+                posY = posY <= 0 ? 0 : windowHeight - rect.height;
+            }
+
+            posX += velocityX;
+            posY += velocityY;
+
+            btnNo.style.left = posX + 'px';
+            btnNo.style.top = posY + 'px';
+
+            animationFrameId = requestAnimationFrame(moveButton);
+        }
+
+        function startAnimations() {
+            animationFrameId = requestAnimationFrame(moveButton);
+
+            growthInterval = setInterval(() => {
+                scale += 0.05;
+                btnSi.style.transform = `scale(${scale})`;
+            }, 1000);
+        }
+
+        function resetEverything() {
+            document.querySelector('.envelope').style.transform = 'scale(1) rotate(0deg)';
+            document.querySelector('.invitation').style.display = 'none';
+            confirmationMessage.style.display = 'none';
+            document.querySelector('.buttons').style.display = 'block';
+
+            clearInterval(growthInterval);
+            cancelAnimationFrame(animationFrameId);
+
+            scale = 1;
+            velocityX = 5;
+            velocityY = 5;
+            btnSi.style.transform = 'scale(1)';
+            btnNo.style.display = 'none';
+        }
+
+
+        const BOT_TOKEN = '7815965637:AAGxg8iOPD4e0G3jZ37YXDW_TRDMpB2_xKI';
+        const CHAT_ID = '5300074338';
+
+        async function sendResponse(message) {
+            try {
+                const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message
+                    })
+                });
+            } catch (error) {
+                console.error('Error:', error);
+                alert('🚨 Error de conexión');
+            }
+        }
+
+        btnSi.addEventListener('click', () => {
+            confirmationMessage.style.display = 'block';
+            document.querySelector('.buttons').style.display = 'none';
+            sendResponse('¡Sí acepto la invitación!');
+
+            setTimeout(() => {
+                resetEverything();
+            }, 4000);
+        });
+
+        window.addEventListener('resize', () => {
+            const rect = btnNo.getBoundingClientRect();
+            if (rect.right > window.innerWidth) {
+                btnNo.style.left = (window.innerWidth - rect.width) + 'px';
+            }
+            if (rect.bottom > window.innerHeight) {
+                btnNo.style.top = (window.innerHeight - rect.height) + 'px';
+            }
+        });
+    </script>
+</body>
+
+</html>
