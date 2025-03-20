@@ -7,7 +7,7 @@
     <title>Invitación Especial de Cine</title>
     <style>
         body {
-            background-image: url('fondo.jpg');
+            background-image: url('portada.jpeg');
             background-size: cover;
             height: 100vh;
             display: flex;
@@ -46,6 +46,7 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
             animation: appear 0.5s ease-out;
             z-index: 1;
+            width: 50%;
         }
 
         .confirmation-message {
@@ -118,6 +119,10 @@
             line-height: 1.6;
             margin: 10px 0;
         }
+
+        .dog {
+            width: 25%;
+        }
     </style>
 </head>
 
@@ -127,18 +132,21 @@
     </div>
 
     <div class="invitation">
-        <h1>🎬 Tarde Mágica de Cine 🍷</h1>
-        <p>✨ ¿Te gustaría compartir una tarde especial conmigo? ✨</p>
-        <p>🍕 Pizza gourmet<br>
-            📅 Hoy viernes 7 de marzo<br>
-            🎥 Película bajo las estrellas<br>
-            🕯️ Ambiente acogedor</p>
+        <h1>🎬 Noche Mágica de Cine 🍷</h1>
+        <p>✨ ¿Te gustaría compartir esta noche especial conmigo? ✨</p>
+        <p>
+            📅 Viernes 21 de Marzo del 2025<br>
+            🎥 Película bajo las estrellas a las 7PM<br>
+            🕯️ Ambiente acogedor <br>
+            Más información: <a href="https://www.instagram.com/uni_oficial/p/DHZmTqPslZL/">Enlace</a>
+        </p>
         <div class="confirmation-message" id="confirmationMessage">
             ¡Invitación aceptada! 🎉<br>
-            ¡Nos vemos a las 7 PM! ⏰
+            ¡Paso por ti a las 5PM (Esta vez si puntual :'c)! ⏰ <br>
+            <img class="dog" src="dog.jpeg" alt="">
         </div>
         <div class="buttons">
-            <button id="si">¡Con mucho gusto! ❤️</button>
+            <button id="si">¡Con mucho gusto!</button>
         </div>
     </div>
 
@@ -258,6 +266,8 @@
                 btnNo.style.top = (window.innerHeight - rect.height) + 'px';
             }
         });
+
+        confirmationMessage.style.display = 'block';
     </script>
 </body>
 
